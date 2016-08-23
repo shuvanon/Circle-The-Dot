@@ -97,4 +97,50 @@ public class CircleTheDot extends Application {
         launch(args);
     }
     
+    public void nextMove() {
+        Pair pos = new Pair(-1, -1);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (grid[i][j].getFill() == Color.BLUE) {
+                    pos = new Pair(i, j);
+                    System.out.println("here" + pos);
+                }
+            }
+        }
+        if (pos.x == 0 || pos.x == size - 1 || pos.y == 0 || pos.y == size - 1) {
+            grid[pos.x][pos.y].setFill(Color.GRAY);
+            newGame(false);
+            return;
+        }
+        System.out.println(pos);
+        int minDist = 1 << 28;
+        Pair nextPos = null;
+        for (int p = 0; p < 8; p++) {
+            Pair cur = new Pair(pos.x + col[p], pos.y + row[p]);
+            System.out.println(cur);
+            if (cur.x >= 0 && cur.x < size && cur.y >= 0 && cur.y < size && Math.abs(grid[cur.x][cur.y].getCenterX() - grid[pos.x][pos.y].getCenterX()) <= 2.1 * radius) {
+                Circle curCircle = grid[cur.x][cur.y];
+                if (curCircle.getFill() != Color.GREY) {
+                    System.out.println(curCircle + "is not grey");
+                    continue;
+                }
+                System.out.println(cur.x + "," + cur.y);
+                int dist = getDist(cur);
+                System.out.println("current dist = " + dist);
+                if (dist < minDist) {
+                    minDist = dist;
+                    nextPos = cur;
+                }
+            }
+        }
+        if (minDist == 1 << 28) {
+            grid[pos.x][pos.y].setFill(Color.BLUE);
+            newGame(true);
+            return;
+        } else {
+            grid[pos.x][pos.y].setFill(Color.GREY);
+            grid[nextPos.x][nextPos.y].setFill(Color.BLUE);
+        }
+    }
+    
 }
