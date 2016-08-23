@@ -6,6 +6,7 @@
 package circlethedot;
 
 import java.util.ArrayList;
+import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,8 +45,8 @@ public class CircleTheDot extends Application {
     }
 
     private void initUI(Stage stage){
-        grid=new Circle[size][size];
-        circles =new ArrayList<>();
+        grid = new Circle[size][size];
+        circles = new ArrayList<>();
         
         Pane root = new Pane();
         
@@ -62,8 +63,31 @@ public class CircleTheDot extends Application {
                 circle.setId(x + "," + y);
                 circle.setFill(Color.GRAY);
                 grid[x][y] = circle;
+                circle.setOnMouseClicked(new javafx.event.EventHandler<javafx.scene.input.MouseEvent>() {
+
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent t) {
+                        Circle clickedCircle = (Circle) t.getSource();
+                        if (clickedCircle.getFill() == Color.GRAY) {
+                            clickedCircle.setFill(Color.ORANGE);
+                            //nextMove();
+                        }
+                    }
+                });
+
+                circles.add(circle);
             }
         }
+        Random rand = new Random();
+        for (int i = 0; i < 15; i++) {
+            circles.get(rand.nextInt(81)).setFill(Color.ORANGE);
+        }
+        circles.get(20 + rand.nextInt(20)).setFill(Color.BLUE);
+        root.getChildren().addAll(circles);
+        Scene scene = new Scene(root, 650, 580, Color.WHITESMOKE);
+        stage.setTitle("Circle The Dot");
+        stage.setScene(scene);
+        stage.show();
     }
     
     /**
