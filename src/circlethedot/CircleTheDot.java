@@ -76,7 +76,7 @@ public class CircleTheDot extends Application {
                         Circle clickedCircle = (Circle) t.getSource();
                         if (clickedCircle.getFill() == Color.GRAY) {
                             clickedCircle.setFill(Color.ORANGE);
-                            //nextMove();
+                            nextMove();
                         }
                     }
                 });
