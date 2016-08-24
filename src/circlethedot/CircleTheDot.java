@@ -7,13 +7,17 @@ package circlethedot;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -182,4 +186,21 @@ public class CircleTheDot extends Application {
         return ret;
     }
     
+    
+    void newGame(boolean win) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Game Over");
+        if (win) {
+            alert.setHeaderText("Congrats!! dot trapped!!\nPlay again?");
+        } else {
+            alert.setHeaderText("Dot escaped!\nPlay again?");
+        }
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            initUI(stage);
+        } else {
+            System.exit(0);
+        }
+    }
 }
