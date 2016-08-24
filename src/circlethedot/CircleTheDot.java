@@ -6,6 +6,8 @@
 package circlethedot;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -141,6 +143,43 @@ public class CircleTheDot extends Application {
             grid[pos.x][pos.y].setFill(Color.GREY);
             grid[nextPos.x][nextPos.y].setFill(Color.BLUE);
         }
+    }
+    
+    private int getDist(Pair pos) {
+        Queue<Integer> Q = new LinkedList<>();
+        Q.add(pos.x);
+        Q.add(pos.y);
+        int ret = 1 << 28, x, y;
+        int[][] dist = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                dist[i][j] = 0;
+            }
+        }
+        dist[pos.x][pos.y] = 1;
+        if (pos.x == 0 || pos.x == size - 1 || pos.y == 0 || pos.y == size - 1) {
+            return 0;
+        }
+        while (!Q.isEmpty()) {
+            x = Q.remove();
+            y = Q.remove();
+            for (int p = 0; p < 8; p++) {
+                Pair cur = new Pair(x + col[p], y + row[p]);
+                if (cur.x >= 0 && cur.x < size && cur.y >= 0 && cur.y < size && Math.abs(grid[cur.x][cur.y].getCenterX() - grid[x][y].getCenterX()) <= 2.1 * radius) {
+                    Circle curCircle = grid[cur.x][cur.y];
+                    if (curCircle.getFill() != Color.GREY || dist[cur.x][cur.y] > 0) {
+                        continue;
+                    }
+                    dist[cur.x][cur.y] = dist[x][y] + 1;
+                    if (cur.x == 0 || cur.x == size - 1 || cur.y == 0 || cur.y == size - 1) {
+                        return dist[cur.x][cur.y] - 1;
+                    }
+                    Q.add(cur.x);
+                    Q.add(cur.y);
+                }
+            }
+        }
+        return ret;
     }
     
 }
