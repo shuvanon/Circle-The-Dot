@@ -88,7 +88,11 @@ public class CircleTheDot extends Application {
         for (int i = 0; i < 15; i++) {
             circles.get(rand.nextInt(81)).setFill(Color.ORANGE);
         }
-        circles.get(20 + rand.nextInt(20)).setFill(Color.BLUE);
+        int bluePos=20+rand.nextInt(57);
+        if((bluePos%10)<2||(bluePos%10>7)){
+            bluePos=bluePos+5;
+        }
+        circles.get(bluePos).setFill(Color.BLUE);
         root.getChildren().addAll(circles);
         Scene scene = new Scene(root, 650, 580, Color.WHITESMOKE);
         stage.setTitle("Circle The Dot");
